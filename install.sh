@@ -886,16 +886,15 @@ async def on_text(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
 # ═══════════════════════════════════════════════════════════════
 
 async def post_init(app: Application):
+    await db_init()
+    logger.info("Database initialised at %s", DB_PATH)
     await app.bot.set_my_commands([
         BotCommand("start",  "Запустить / войти"),
         BotCommand("logout", "Выйти (только для админа)"),
     ])
 
 
-async def main():
-    await db_init()
-    logger.info("Database initialised at %s", DB_PATH)
-
+def main():
     app = (
         Application.builder()
         .token(BOT_TOKEN)
@@ -920,11 +919,11 @@ async def main():
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, on_text))
 
     logger.info("Bot polling started")
-    await app.run_polling(drop_pending_updates=True, allowed_updates=Update.ALL_TYPES)
+    app.run_polling(drop_pending_updates=True, allowed_updates=Update.ALL_TYPES)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
 PYEOF
 
 # ── Systemd service for bot ──────────────────────────────────
