@@ -70,8 +70,7 @@ apt-get install -y -q \
 # ── Install Xray-core ────────────────────────────────────────
 step "Установка Xray-core"
 if ! command -v xray &>/dev/null; then
-    bash <(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh) \
-        -- install -u root
+    bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u root
 fi
 log "Xray версия: $(xray version 2>&1 | head -1)"
 
